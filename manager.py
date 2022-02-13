@@ -56,6 +56,27 @@ while True:
         reply = "Games: " + str(len(games)) + "\n" + gameList
         serverSocket.sendto(reply.encode(), clientAddress)
 
+    elif command[0] == "de-register":
+        userPlayingGame = False
+        for x in games:
+            if x[0] == command[1] or x[1] == command[1] or x[2] == command[1] or x[3] == command[1]:
+                userPlayingGame = True
+        
+        if userPlayingGame == False:
+            userFound = False
+            for index, player in enumerate(players):
+                if player[0] == command[1]:
+                    userFound = True
+                    players.pop(index)
+                    break
+            if userFound == True:
+                reply = "User de-registered"
+            else:
+                reply = "Error: User not found"
+        else:
+            reply = "Error: User currently in game!"
+        serverSocket.sendto(reply.encode(), clientAddress)
+                    
             
         
         

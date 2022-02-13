@@ -69,7 +69,15 @@ while userIn != 5:
 
         userIn = input('Enter Command:')
     elif userIn == '4':
-        print('De-registered')
+        username = input('Enter User To De-Register: ')
+        messege = "de-register," + username
+        clientSocket = socket(AF_INET, SOCK_DGRAM)
+        clientSocket.sendto(messege.encode(),(managerName, managerPort))
+        modifiedMessage, serverAddress = clientSocket.recvfrom(2048)
+        clientSocket.close()
+        returnmessege = modifiedMessage.decode()
+        print(returnmessege)
+        
         userIn = input('Enter Command:')
     elif userIn == '5':
         break
