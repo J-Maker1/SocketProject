@@ -15,6 +15,8 @@ print(
 )
 userIn = input('Enter Command: ')
 while userIn != 5:
+
+    #Condition for registering. A username, IP, and Port are requested, a command is sent, and a reply is returned. Based on the reply, the conditional statement will notify the user of it and adjust some variables for future use of the command
     if userIn == '1':
         #check if peer already registered theirself
         if registered == False:
@@ -47,7 +49,8 @@ while userIn != 5:
 
         
         userIn = input('Enter Command: ')
-        
+
+    #condition for querying players, User selects option, command is sent, and a reply is recieved    
     elif userIn == '2':
         messege = "query players"
         clientSocket = socket(AF_INET, SOCK_DGRAM)
@@ -58,6 +61,8 @@ while userIn != 5:
         print(returnmessege)
 
         userIn = input('Enter Command:')
+    
+    #condition for querying games. User selects option, command is sent to server, and a reply is recieved
     elif userIn == '3':
         messege = "query games"
         clientSocket = socket(AF_INET, SOCK_DGRAM)
@@ -68,6 +73,8 @@ while userIn != 5:
         print(returnmessege)
 
         userIn = input('Enter Command:')
+        
+    #Condition for de-registering. User selects command and types in user name and waits for the server's reply
     elif userIn == '4':
         username = input('Enter User To De-Register: ')
         messege = "de-register," + username
@@ -77,7 +84,7 @@ while userIn != 5:
         clientSocket.close()
         returnmessege = modifiedMessage.decode()
         print(returnmessege)
-        
+
         userIn = input('Enter Command:')
     elif userIn == '5':
         break
