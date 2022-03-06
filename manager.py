@@ -12,7 +12,7 @@ serverSocket.bind(('', serverPort))
 #data for manager to store
 players = []
 games = []
-
+gameID = 0
 
 print("The server is ready to receive")
 while True:
@@ -57,7 +57,7 @@ while True:
     elif command[0] == "query games":
         gameList = ""
         for x in games:
-            gameList += "Game ID: " + x[0] + "Dealer: " + x[1] + ", " + "Player 1: " + x[2] + ", " + "Player 2: " + x[3] + "Player 3: " + x[4] + "\n"
+            gameList += "Game ID: " + x[0] + ", " + "Dealer: " + x[1] + ", " + "Player 1: " + x[2] + ", " + "Player 2: " + x[3] + ", " + "Player 3: " + x[4] + "\n"
         reply = "Games: " + str(len(games)) + "\n" + gameList
         serverSocket.sendto(reply.encode(), clientAddress)
 
@@ -88,6 +88,8 @@ while True:
     if command[0] == "start":
         searchNumber = int(command[1])
         playersFound = []
+        dealerIndex = 0
+        playernames = ["", "NONE", "NONE"]
         for index, player in enumerate(players):
             if searchNumber == 0:
                 break
@@ -101,16 +103,23 @@ while True:
             reply = "SUCCESS"
             for index, player in enumerate(players):
                 if player[0] == command[2]:
-                    reply += "," + player[1] + "-" + player[2]
+                    dealerIndex = index
+                    reply += "," + player[1] + "-" + player[2] + "-" + player[0]
                     y = list(player)
                     y[3] = "In Game"
                     x = tuple(y)
                     players[index] = x
-            for x in playersFound:
+            
+            for index, x in enumerate(playersFound):
                 y = list(players[x])
                 y[3] = "In Game"
                 players[x] = tuple(y)
-                reply += "," + players[x][1] + "-" + players[x][2]
+                reply += "," + players[x][1] + "-" + players[x][2] + "-" + players[x][0]
+                playernames[index] = players[x][0]
+
+            gameID += 1
+            newGame = (str(gameID), players[dealerIndex][0], playernames[0], playernames[1], playernames[2])
+            games.append(newGame)
         serverSocket.sendto(reply.encode(), clientAddress)
 
     if command[0] == "waiting":
