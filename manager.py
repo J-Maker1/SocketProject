@@ -138,6 +138,41 @@ while True:
                 players[index] = x
                 reply = "SUCCESS"
         serverSocket.sendto(reply.encode(), clientAddress)
+    #handler for ending a game
+    if command[0] == "end":
+        reply = "Error"
+        gamedestination = 0
+        for index, x in enumerate(games):
+            if x[1] == command[1]:
+                gamedestination = index
+                reply = "SUCCESS"
+                y = list(x)
+                for index2, player in enumerate(players):
+                    if player[0] == y[1]:
+                        z = list(player)
+                        z[3] = "Not In Game"
+                        A = tuple(z)
+                        players[index2] = A
+                    if player[0] == y[2]:
+                        z = list(player)
+                        z[3] = "Not In Game"
+                        A = tuple(z)
+                        players[index2] = A
+                    if player[0] == y[3]:
+                        z = list(player)
+                        z[3] = "Not In Game"
+                        A = tuple(z)
+                        players[index2] = A
+                    if player[0] == y[4]:
+                        z = list(player)
+                        z[3] = "Not In Game"
+                        A = tuple(z)
+                        players[index2] = A
+                
+        games.pop(gamedestination)
+        serverSocket.sendto(reply.encode(), clientAddress)
+
+                
             
             
 
